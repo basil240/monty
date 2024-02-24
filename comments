@@ -1,0 +1,62 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include "monty.h"
+
+void interpret_file(FILE *file);
+
+int main(int argc, char *argv[])
+{
+    if (argc != 2)
+    {
+        fprintf(stderr, "USAGE: monty file\n");
+        return EXIT_FAILURE;
+    }
+
+    FILE *file = fopen(argv[1], "r");
+    if (file == NULL)
+    {
+        fprintf(stderr, "Error: Can't open file %s\n", argv[1]);
+        return EXIT_FAILURE;
+    }
+
+    interpret_file(file);
+
+    fclose(file);
+    return EXIT_SUCCESS;
+}
+
+void interpret_file(FILE *file)
+{
+    char *line = NULL;
+    size_t len = 0;
+    ssize_t read;
+
+    while ((read = getline(&line, &len, file)) != -1)
+    {
+        // Skip lines starting with #
+        if (line[0] == '#')
+            continue;
+
+        // Split line into opcode and argument (if any)
+        char *opcode = strtok(line, " \n");
+
+        // Handle opcodes
+        if (opcode != NULL)
+        {
+            if (strcmp(opcode, "push") == 0)
+            {
+                push(&stack, line_number);
+            }
+            else if (strcmp(opcode, "pall") == 0)
+            {
+                pall(&stack, line_number);
+            }
+            // Add handling for other opcodes here
+        }
+
+        line_number++;
+    }
+
+    free(line);
+}

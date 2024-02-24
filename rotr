@@ -1,0 +1,30 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include "monty.h"
+
+/**
+ * @stack: 
+ * @line_number: 
+ */
+void rotr(stack_t **stack, unsigned int line_number)
+{
+    (void)line_number;
+
+    if (*stack == NULL || (*stack)->next == NULL)
+        return;
+
+    stack_t *last = *stack;
+    stack_t *second_last = NULL;
+
+    while (last->next != NULL)
+    {
+        second_last = last;
+        last = last->next;
+    }
+
+    last->next = *stack;
+    *stack = last;
+    second_last->next = NULL;
+    (*stack)->prev = NULL;
+    last->next->prev = last;
+}

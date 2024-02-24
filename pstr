@@ -1,0 +1,23 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include "monty.h"
+
+/**
+ * pstr - Prints the string starting at the top of the stack.
+ * @stack: Double pointer to the beginning of the stack.
+ * @line_number: The line number in the file where the pstr opcode appears.
+ */
+void pstr(stack_t **stack, unsigned int line_number)
+{
+    (void)line_number; // Unused parameter
+
+    stack_t *current = *stack;
+
+    while (current != NULL && current->n != 0 && current->n >= 0 && current->n <= 127)
+    {
+        putchar(current->n);
+        current = current->next;
+    }
+
+    putchar('\n');
+}
